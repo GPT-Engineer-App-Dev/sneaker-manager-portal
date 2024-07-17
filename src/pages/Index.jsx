@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Trash2 } from 'lucide-react';
 
 const SneakerManagement = () => {
   const [sneakers, setSneakers] = useState([
@@ -20,9 +21,13 @@ const SneakerManagement = () => {
 
   const handleAddSneaker = () => {
     if (newSneaker.name && newSneaker.brand && newSneaker.size && newSneaker.price) {
-      setSneakers([...sneakers, { id: sneakers.length + 1, ...newSneaker }]);
+      setSneakers([...sneakers, { id: Date.now(), ...newSneaker }]);
       setNewSneaker({ name: '', brand: '', size: '', price: '' });
     }
+  };
+
+  const handleRemoveSneaker = (id) => {
+    setSneakers(sneakers.filter(sneaker => sneaker.id !== id));
   };
 
   return (
@@ -78,6 +83,7 @@ const SneakerManagement = () => {
                 <TableHead>Brand</TableHead>
                 <TableHead>Size</TableHead>
                 <TableHead>Price</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -87,6 +93,15 @@ const SneakerManagement = () => {
                   <TableCell>{sneaker.brand}</TableCell>
                   <TableCell>{sneaker.size}</TableCell>
                   <TableCell>${sneaker.price}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => handleRemoveSneaker(sneaker.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
